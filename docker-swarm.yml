@@ -2,8 +2,6 @@ version: "3"
 services:
   db:
     image: postgres:11.0
-    restart: always
-    container_name: postgres_server_demo
     env_file:
       - .env
     volumes:
@@ -11,10 +9,11 @@ services:
       - ./Docker/pgsql/data:/data/postgres
     ports:
       - 6666:5432
+    networks:
+      - webnet
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin_client_mikola
     logging:
       driver: "none"
     env_file:
@@ -23,3 +22,9 @@ services:
       - db
     ports:
       - 8182:80
+    networks:
+      - webnet
+      
+networks:
+  webnet:
+    driver: overlay
