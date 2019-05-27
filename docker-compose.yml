@@ -1,0 +1,25 @@
+version: "3"
+services:
+  db:
+    image: postgres:11.0
+    restart: always
+    container_name: postgres_server_mikola
+    env_file:
+      - .env
+    volumes:
+      - ./Docker/pgsql/conf:/etc/postgresql/:rw
+      - ./Docker/pgsql/data:/data/postgres
+    ports:
+      - 6666:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_client_mikola
+    logging:
+      driver: "none"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - 8182:80
